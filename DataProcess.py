@@ -6,6 +6,7 @@ class DataSource(object):
             raise ValueError("Invalid file format")
         self.infilepath = infilepath
         self.outfilepath = outfilepath
+        
 class StationID(DataSource):
     ext = '.csv'
     def extract(self,location,time):
@@ -22,12 +23,12 @@ class StationID(DataSource):
         # loaddata
         data = pd.read_csv(self.infilepath)
          # 根据经纬度筛选出所需数据
-        neilonbool1 = data['LONGITUDE'] >= location['Min_Lon']         #101
+        neilonbool1 = data['LONGITUDE'] >= location['Min_Lon']         
         neilonbool2 = data['LONGITUDE'] <= location['Max_Lon']
         neilonbool = neilonbool1 & neilonbool2
 
         neilatbool1 = data['LATITUDE'] >= location['Min_Lat']
-        neilatbool2 = data['LATITUDE'] <= location['Max_Lat']           #47
+        neilatbool2 = data['LATITUDE'] <= location['Max_Lat']           
         neilatbool = neilatbool1 & neilatbool2
         neilatlonbool = neilonbool & neilatbool
 
