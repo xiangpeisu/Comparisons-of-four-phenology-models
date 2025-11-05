@@ -227,16 +227,6 @@ def dataproce(f_name, f_path, stationInfo):
     dew_pointtemperature = meter_data[
         ['STATION_ID', 'LONGITUDE', 'LATITUDE', 'ELEVATION', 'year', 'month', 'day', 'dew-pointtemperature']].copy()
 
-    # #将dataframe中的值由str转成float
-    # #禁止SettingWithCopyWarning警告：用Temp_data = meter_data[['年','月','日','温度']]后，
-    # # Temp_data实际是一个指向meter_data对应列的“标签”，在内存中并没有为Temp_data分配新的地址用于存储希望截取的数据。
-    # #当对Temp_data的“温度”列操作时，python在风中凌乱啊“Temp_data他自己没有数据的啊，他指向了meter_data而已，
-    # # 我怎么敢直接修改meter_data的数据呢？！”，所以用meter_data给Temp_data赋值时，加一个.copy()
-    # Temp_data.loc[:,'temp'] = Temp_data.loc[:,'temp'].astype(float)
-    # VaporPressure.loc[:,'pressure'] = VaporPressure.loc[:,'pressure'].astype(float)
-    # precipitation.loc[:,'6hour of rainfall'] = precipitation.loc[:,'6hour of rainfall'].astype(float)
-    # windspeed.loc[:,'wind speed'] = windspeed.loc[:,'wind speed'].astype(float)
-
     # 用groupby对数据中的列分类统计
     # 每日最高温度、最低温度、平均温度(对小时列也求了max,min,mean)
     # 数据说明文档中表示原始数据中温度、露点温度、气压、风速、降雨量的换算系数为10，所以要对原始数据中的对应数据除以10，进行换算。
@@ -583,49 +573,7 @@ def DataPreproc1():
         # 计算year2年第1天距离1970.01.01的天数
         interval = d1 - d0
         # 计算年积日
-        row['Greenup'] = row['Greenup']-interval.days
-    # print(len(station_Greenup)) # 有1882个样本点
-        # print(row['STATION_ID'],row['year'],row['Greenup'])
-    # for index, row in station_Dormancy.iterrows():
-    #     year2 = row['year']
-    #     d1 = datetime.datetime(year2, 1, 1)
-    #     # 计算year2年第1天距离1970.01.01的天数
-    #     interval = d1 - d0
-    #     #计算年积日
-    #     row['Dormancy'] = row['Dormancy'] - interval.days
-
-    # # 打印箱线图，查找异常点：(看着没有)
-    # bp = plt.boxplot(station_Greenup['Greenup'], patch_artist=True, widths=0.3, showmeans=False,
-    #                      medianprops={'lw': 1, 'color': 'black'},
-    #                      zorder=1,
-    #                      # 设置异常点属性，如点的形状、填充色和点的大小
-    #                      flierprops={'marker': 'o', 'markerfacecolor': 'black', 'markersize': 8})
-    #
-    # bp1 = plt.boxplot(station_Dormancy['Dormancy'], patch_artist=True, widths=0.3, showmeans=False,
-    #                       medianprops={'lw': 1, 'color': 'black'},
-    #                       zorder=1,
-    #                       # 设置异常点属性，如点的形状、填充色和点的大小
-    #                       flierprops={'marker': 'o', 'markerfacecolor': 'black', 'markersize': 8})
-    # plt.show()
-
-    # # 处理异常值
-    # # 返青期的两个<80和>200异常点直接删除
-    # mask = (station_Greenup['Greenup'] > 200) | (station_Greenup['Greenup'] < 80)
-    # #记录离群值所在的index
-    # index_outlier = station_Greenup[mask].index
-    # # print(index_outlier)
-    # # 实例个数
-    # pointnum = len(station_Greenup)
-    # #drop掉离群值
-    # station_Greenup.drop(station_Greenup[mask].index, inplace=True)
-    # station_Greenup.reset_index(drop=True, inplace=True)
-    # bp = plt.boxplot(station_Greenup['Greenup'], patch_artist=True, widths=0.3, showmeans=False,
-    #                  medianprops={'lw': 1, 'color': 'black'},
-    #                  zorder=1,
-    #                  # 设置异常点属性，如点的形状、填充色和点的大小
-    #                  flierprops={'marker': 'o', 'markerfacecolor': 'black', 'markersize': 3})
-    #
-    # plt.show()
+        row['Greenup'] = row['Greenup']-interval.days    
 
     # print(data.head())
     # 计算每日GDD, 基温取5°C,从1月1日开始计算 和GDP和[[@Estimate2022Masago]]
